@@ -2,10 +2,10 @@
 
 [Header
   fullWidth:true
-  title:"Confidence_interval"
-  subtitle:"Welcome to Idyll. Open index.idyll to start writing"
-  author:"Your Name Here"
-  authorLink:"https://idyll-lang.org"
+  title:"Confidence Interval"
+  subtitle:"Visualizing Confidence Intervals with Boostrapping"
+  author:"Hansol Lee"
+  authorLink:"https://github.com/hansori94/confidence_interval"
   date:"May 14, 2022"
   background:"#222222"
   color:"#ffffff"
@@ -13,51 +13,37 @@
 
 [var name:"x" value:0 /]
 
-## Introduction
+# Introduction
 
-This is an Idyll post. It is generated via
-the file `index.idyll`. To compile this post using
-idyll, run the command `idyll` inside of this directory.
+Let’s say we’re interested in the average age of university students.
+Since we cannot collect ages of all university students, imagine we randomly select a sample of 10 university students and calculate their average age instead.
 
+Let’s say these are the ages of these 10 students: 20, 19, 19, 20, 21, 22, 26, 17, 24, 30.
+We can calculate their sample mean: 21.7
 
-Idyll posts are designed to support interaction and
-data-driven graphics.
+Then the natural question is: how good of an estimate is 21.7 to the true average age of all university students?
 
+**Confidence intervals** will help us answer this question.
+
+[Aside]
 [var name:"state" value:0 /]
 [CustomD3Component className:"d3-component" state:state /]
 [button onClick:`state++`]
   Click Me.
 [/button]
+[/Aside]
 
-Configuration can be done via the `idyll` field in `package.json`.
+# Construction of confidence intervals
+There are, in fact, many different ways of constructing confidence intervals!
+In this explorable, we will focus on how confidence intervals are constructed using **bootstrapping**.
+Here is how it works:
 
-## Markup
+1. Choose, with replacement, 10 observations from the original sample
+2. Calculate the mean of this bootstrapped sample
+3. Repeat step 1 and 2 many (>10,000) times
 
-Idyll is based on Markdown.
-
-You can use familiar syntax
-to create **bold** (`**bold**` ) and *italic* (`*italic*` ) styles,
-
-* lists
-* of
-* items,
-
-```
-* lists
-* of
-* items,
-```
-
-1. and numbered
-2. lists
-3. of items,
-
-
-```
-1. and numbered
-2. lists
-3. of items,
-```
+95% confidence interval is just an interval that covers 95% of these many bootstrapped means.
+This is interpreted as: “If we were to repeat the experiment over and over, then 95% of the time the confidence intervals contain the true mean.”
 
 in addition to [hyperlinks](https://idyll-lang.org) and images:
 
@@ -67,13 +53,41 @@ in addition to [hyperlinks](https://idyll-lang.org) and images:
 ![quill](static/images/quill.svg)
 ```
 
-## Components
+# Width of Confidence Intervals
 
-Components can be embedded using a bracket syntax:
+To get a better understanding of confidence intervals, check out how the width of confidence intervals changes as a function of…
 
+* The specified confidence level
 ```
-[Range /]
+0.80, 0.90, 0.95, 0.99
 ```
+* Variability in the sample
+```
+low, middle, high variability
+```
+* Sample size
+```
+5, 10, 30, 50, 100
+```
+
+
+
+
+# Why are confidence intervals useful?
+
+
+
+## CIs do not overlap
+Confidence intervals are also useful to compare two samples.
+
+We can immediately say that there is a statistically significant difference between the average ages of undergraduate and PhD students *because the confidence intervals do not overlap*.
+
+## CIs do overlap
+What about when confidence intervals do overlap? The confidence intervals are overlapping between the ages of undergraduate and master’s students.
+
+In this case, there is *still a chance that the average ages are statistically significantly different* between the two groups, so we will need to perform a t-test to determine statistical significance.
+
+[hr /]
 
 and can contain nested content:
 
@@ -101,9 +115,9 @@ To create your own, add it to the `components/` folder. There are examples of ho
 Here is how you can instantiate a variable and bind it to a component:
 
 [var name:"exampleVar" value:5 /]
-
 [Range min:0 max:10 value:exampleVar /]
 [Display value:exampleVar /]
+
 
 ```
 [var name:"exampleVar" value:5 /]
@@ -111,33 +125,33 @@ Here is how you can instantiate a variable and bind it to a component:
 [Range min:0 max:10 value:exampleVar /]
 [Display value:exampleVar /]
 ```
-
-## Learn More
-
-To learn more see the documentation at [https://idyll-lang.org/docs/](https://idyll-lang.org/docs/),
-join our [chatroom](https://gitter.im/idyll-lang/Lobby), or see the project on [GitHub](https://github.com/idyll-lang/idyll).
-
-[hr /]
-
-# Technical Details
-
-## Installation
-
-- Make sure you have `idyll` installed (`npm i -g idyll`).
-- Clone this repo and run `npm install`.
-
-## Developing a post locally
-
-Run `idyll`.
-
-## Building a post for production
-
-Run `idyll build`. The output will appear in the top-level `build` folder. To change the output location, change the `output` option in `package.json`.
-
-## Deploying
-
-Make sure your post has been built, then deploy the docs folder via any static hosting service.
-
-## Dependencies
-
-You can install custom dependencies by running `npm install <package-name> --save`. Note that any collaborators will also need download the package locally by running `npm install` after pulling the changes.
+// 
+// ## Learn More
+//
+// To learn more see the documentation at [https://idyll-lang.org/docs/](https://idyll-lang.org/docs/),
+// join our [chatroom](https://gitter.im/idyll-lang/Lobby), or see the project on [GitHub](https://github.com/idyll-lang/idyll).
+//
+// [hr /]
+//
+// # Technical Details
+//
+// ## Installation
+//
+// - Make sure you have `idyll` installed (`npm i -g idyll`).
+// - Clone this repo and run `npm install`.
+//
+// ## Developing a post locally
+//
+// Run `idyll`.
+//
+// ## Building a post for production
+//
+// Run `idyll build`. The output will appear in the top-level `build` folder. To change the output location, change the `output` option in `package.json`.
+//
+// ## Deploying
+//
+// Make sure your post has been built, then deploy the docs folder via any static hosting service.
+//
+// ## Dependencies
+//
+// You can install custom dependencies by running `npm install <package-name> --save`. Note that any collaborators will also need download the package locally by running `npm install` after pulling the changes.
